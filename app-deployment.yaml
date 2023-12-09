@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-assignment-app-deployment
+spec:
+  replicas: 2  # You can change this number based on how many instances you want
+  selector:
+    matchLabels:
+      app: ai-assignment-app
+  template:
+    metadata:
+      labels:
+        app: ai-assignment-app
+    spec:
+      containers:
+      - name: ai-assignment-app
+        image: ai-assignment-app:latest  # Ensure this matches your Docker image name
+        imagePullPolicy: IfNotPresent  # This line is correctly indented now
+        ports:
+        - containerPort: 5000  # This line is correctly indented now
