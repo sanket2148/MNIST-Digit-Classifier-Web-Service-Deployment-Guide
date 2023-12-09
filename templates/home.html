@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNIST Prediction Service</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #prediction { font-size: 24px; margin-top: 20px; }
+        #chart-container { width: 40%; margin: auto; }
+    </style>
+</head>
+<body>
+    <h1>Upload an Image for MNIST Prediction</h1>
+    <form action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <input type="submit" value="Predict">
+    </form>
+
+    <div id="prediction"></div>
+    <div id="chart-container">
+        <!-- Placeholder for the bar chart -->
+        <canvas id="resultChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JavaScript to handle the response and display the chart will go here -->
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/predict', {method: 'POST', body: formData});
+            const result = await response.json();
+            
+            // Update prediction text
+            document.getElementById('prediction').textContent = 'Predicted Digit: ' + result.predicted_digit;
+    
+            // Chart.js for displaying probabilities
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                    datasets: [{
+                        label: 'Prediction Probabilities',
+                        data: result.prediction[0],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    
+</body>
+</html>
