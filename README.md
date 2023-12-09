@@ -1,7 +1,3 @@
-To enhance the README for absolute clarity and ensure even a beginner can deploy the app, I would include the following details:
-
----
-
 # MNIST Digit Classifier Web Service Deployment Guide
 
 Welcome to the MNIST Digit Classifier Deployment Guide. This step-by-step guide will walk you through deploying a Flask-based web service that utilizes a trained MNIST model to classify handwritten digits.
